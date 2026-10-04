@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fffaf2; --surface:#ffffff; --text:#1c1917; --muted:#57534e; --line:#ece3d4;
+  --accent:#f59e0b; --accent-strong:#d97706; --accent-ink:#92400e; --accent-soft:#fef3c7;
+  --ok:#15803d; --ok-soft:#dcfce7; --err:#b91c1c; --err-soft:#fee2e2;
+  --radius:18px; --shadow:0 1px 2px rgba(28,25,23,.05),0 12px 32px rgba(146,64,14,.08);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:17px/1.7 "Sarabun",-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Thai","Leelawadee UI",Thonburi,Tahoma,sans-serif}
+h1,h2,h3,.btn,.brand,.badge{font-family:"Kanit","Sarabun",-apple-system,"Noto Sans Thai",sans-serif}
+.wrap{max-width:760px;margin:0 auto;padding:18px 16px 40px}
+h1,h2,h3{line-height:1.3;margin:0}
+h1{font-size:clamp(24px,6vw,32px)}
+h2{font-size:21px;margin-bottom:8px}
+p{margin:0 0 10px}
+a{color:var(--accent-ink)}
+[hidden]{display:none !important}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:17px;margin-bottom:18px}
+.brand svg{width:30px;height:30px;flex:none}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:20px 18px;box-shadow:var(--shadow);margin-bottom:14px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.pill{display:inline-block;border-radius:999px;padding:2px 12px;font-weight:700;font-size:14px}
+.pill.wait{background:var(--accent-soft);color:var(--accent-ink)}
+.pill.ok{background:var(--ok-soft);color:var(--ok)}
+.pill.err{background:var(--err-soft);color:var(--err)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;min-height:48px;padding:11px 20px;border-radius:12px;border:0;font:inherit;font-weight:700;cursor:pointer;text-decoration:none}
+.btn.primary{background:var(--accent);color:#1c1917}
+.btn.primary:hover{background:var(--accent-strong)}
+.btn.ghost{background:var(--surface);color:var(--text);border:1.5px solid #d9cfbf}
+.btn.line{background:#06c755;color:#fff}
+.btn.small{min-height:38px;padding:6px 14px;font-size:15px}
+.btn.full{width:100%}
+.btn:disabled{opacity:.6;cursor:wait}
+.keybox{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin:8px 0 6px}
+.key{font:800 clamp(20px,6vw,28px)/1.2 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:1px;background:var(--accent-soft);color:#1c1917;border:1.5px dashed var(--accent);border-radius:12px;padding:10px 14px;user-select:all;word-break:break-all}
+.facts{display:flex;flex-wrap:wrap;gap:6px 16px;color:var(--muted);font-size:15px}
+.facts b{color:var(--text)}
+.alert{border-radius:12px;padding:10px 14px;margin:10px 0;font-size:15px}
+.alert.err{background:var(--err-soft);color:var(--err)}
+.alert.ok{background:var(--ok-soft);color:var(--ok)}
+.alert.info{background:var(--accent-soft);color:var(--accent-ink)}
+.os{display:grid;gap:14px;grid-template-columns:1fr}
+.oscard{border:1.5px solid var(--line);border-radius:16px;padding:16px;background:#fffdf8}
+.oscard.mine{border-color:var(--accent);background:#fffbeb}
+.oscard h3{font-size:18px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
+.oscard h3 .tag{font-size:12px;font-weight:700;background:var(--accent);color:#1c1917;border-radius:999px;padding:1px 10px}
+ol.steps{margin:12px 0 0;padding-left:22px}
+ol.steps li{margin:6px 0}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;background:#f3eadb;border-radius:6px;padding:1px 7px;font-size:15px}
+.spin{width:44px;height:44px;border-radius:50%;border:5px solid var(--accent-soft);border-top-color:var(--accent);animation:sp 1s linear infinite;margin:6px 0 12px}
+@keyframes sp{to{transform:rotate(360deg)}}
+footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
+@media (min-width:720px){ .os{grid-template-columns:1fr 1fr} .card{padding:26px} }
+.orderNo{white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 36 36" aria-hidden="true"><rect width="36" height="36" rx="10" fill="#f59e0b"/><circle cx="11" cy="24" r="4" fill="none" stroke="#1c1917" stroke-width="2.4"/><circle cx="11" cy="12" r="4" fill="none" stroke="#1c1917" stroke-width="2.4"/><path d="M14.5 21.5 28 9M14.5 14.5 28 27" stroke="#1c1917" stroke-width="2.4" stroke-linecap="round"/></svg>
+    <span id="brandName">ตัดคลิป AI</span>
+  </div>
+
+  <!-- ไม่พบ -->
+  <div class="card" id="vNotFound" hidden>
+    <h1>ไม่พบคำสั่งซื้อ</h1>
+    <p class="muted" id="nfMsg" style="margin-top:8px"></p>
+    <p><a class="btn ghost" id="shopLink1" href="#" target="_top">ไปหน้าสั่งซื้อ</a></p>
+  </div>
+
+  <!-- รอตรวจ -->
+  <div class="card" id="vPending" hidden>
+    <span class="pill wait">รอตรวจสลิป</span>
+    <div class="spin" aria-hidden="true" style="margin-top:14px"></div>
+    <h1>ได้รับคำสั่งซื้อแล้ว กำลังตรวจสลิป</h1>
+    <p class="muted" style="margin-top:8px" id="pendEta"></p>
+    <div class="facts" id="pendFacts"></div>
+    <p class="small muted" style="margin-top:12px">หน้านี้อัปเดตเองทุก 30 วินาที · ตรวจล่าสุด <span id="lastCheck">-</span> · <a href="#" id="refreshNow">ตรวจตอนนี้</a></p>
+    <div class="alert info small">บันทึกลิงก์หน้านี้ไว้ (บุ๊กมาร์ก หรือส่งเข้าไลน์ตัวเอง) — อนุมัติแล้วคีย์และปุ่มติดตั้งจะขึ้นที่นี่</div>
+  </div>
+
+  <!-- ปฏิเสธ -->
+  <div class="card" id="vRejected" hidden>
+    <span class="pill err">ยังไม่ผ่านการตรวจ</span>
+    <h1 style="margin-top:12px">คำสั่งซื้อนี้ยังไม่ผ่านการตรวจ</h1>
+    <p style="margin-top:8px">เหตุผล: <b id="rejWhy"></b></p>
+    <p class="muted">ถ้าโอนเงินแล้วจริง ติดต่อผู้ขายพร้อมเลขคำสั่งซื้อ <b class="orderNo"></b> และสลิป — ผู้ขายตรวจใหม่ให้ได้</p>
+    <p><a class="btn line lineBtn" href="#" target="_blank" rel="noopener" hidden>ทักไลน์ผู้ขาย</a> <a class="btn ghost" id="shopLink2" href="#" target="_top">สั่งซื้อใหม่</a></p>
+  </div>
+
+  <!-- อนุมัติ -->
+  <div id="vApproved" hidden>
+    <div class="card">
+      <span class="pill ok">อนุมัติแล้ว</span>
+      <h1 style="margin-top:12px" id="okTitle">คีย์ของคุณพร้อมใช้งาน</h1>
+      <div class="keybox"><span class="key" id="keyText"></span><button class="btn ghost small" type="button" id="copyKey">คัดลอกคีย์</button></div>
+      <div class="facts" id="okFacts"></div>
+      <div class="alert err" id="keyWarn" hidden></div>
+      <p class="small muted" style="margin-top:10px" id="renewLine" hidden>ต่ออายุได้ทุกเมื่อ (วันที่เหลือไม่หาย): <a id="renewLink" href="#" target="_top">ต่ออายุคีย์นี้</a></p>
+    </div>
+
+    <div class="card" id="installCard">
+      <h2>ติดตั้งโปรแกรม</h2>
+      <div class="alert info small" id="mobileNote" hidden>ติดตั้งได้บนคอมพิวเตอร์เท่านั้น — เปิดลิงก์หน้านี้บนคอมที่จะติดตั้ง (ส่งลิงก์เข้าไลน์/อีเมลตัวเอง แล้วเปิดบนคอม) <button class="btn ghost small" type="button" id="copyPage" style="margin-top:6px">คัดลอกลิงก์หน้านี้</button></div>
+      <p class="muted small">ตัวติดตั้งมีคีย์ของคุณใส่ไว้แล้ว — ติดตั้งเสร็จ โปรแกรมเปิดใช้งานเอง (ต้องต่ออินเทอร์เน็ต)</p>
+      <div class="os">
+        <div class="oscard" id="osWin">
+          <h3>Windows 10 / 11 <span class="tag" id="tagWin" hidden>เครื่องนี้</span></h3>
+          <button class="btn primary full" type="button" id="dlWin">ดาวน์โหลดตัวติดตั้ง Windows</button>
+          <div class="alert" id="msgWin" hidden></div>
+          <ol class="steps">
+            <li>ได้ไฟล์ <b>CutAI-Setup-Windows.zip</b> ในโฟลเดอร์ Downloads</li>
+            <li>เปิดไฟล์นั้น แล้วดับเบิลคลิก <b>Install-CutAI.bat</b> ข้างใน (ไม่ต้องแตกไฟล์ก่อน)</li>
+            <li>ถ้าขึ้นกรอบฟ้า "Windows protected your PC" กด <b>More info</b> → <b>Run anyway</b></li>
+            <li>รอ 5–15 นาที อย่าปิดหน้าต่างสีดำ — เสร็จแล้วโปรแกรมเปิดเอง และมีไอคอน "ตัดคลิป AI" บน Desktop</li>
+          </ol>
+        </div>
+        <div class="oscard" id="osMac">
+          <h3>Mac (ชิป Apple) <span class="tag" id="tagMac" hidden>เครื่องนี้</span></h3>
+          <button class="btn primary full" type="button" id="dlMac">ดาวน์โหลดตัวติดตั้ง Mac</button>
+          <div class="alert" id="msgMac" hidden></div>
+          <ol class="steps">
+            <li>ได้ไฟล์ <b>CutAI-Setup-Mac.command</b> ในโฟลเดอร์ Downloads — <b>อย่าดับเบิลคลิกไฟล์นี้</b> (Mac จะขึ้นว่า "ไม่ได้เปิด" ให้กด <b>เสร็จสิ้น</b> ห้ามกดย้ายไปถังขยะ)</li>
+            <li>กดปุ่มนี้เพื่อคัดลอกคำสั่ง: <button class="btn small" type="button" id="cpMac">📋 คัดลอกคำสั่งติดตั้ง</button>
+              <code id="macCmd" style="display:block;margin-top:6px;word-break:break-all">bash "$(ls -t ~/Downloads/CutAI-Setup-Mac*.command | head -1)"</code></li>
+            <li>เปิดแอป <b>Terminal</b> (กด ⌘ + Space พิมพ์ Terminal แล้วกด Enter)</li>
+            <li>คลิกในหน้าต่าง Terminal กด <b>⌘ + V</b> (วาง) แล้วกด <b>Enter</b> — แล้วทำตามที่หน้าจอบอก</li>
+          </ol>
+        </div>
+      </div>
+      <div class="alert ok" style="margin-top:16px"><b>เปิดโปรแกรมครั้งแรก:</b> ทำการ์ดตั้งค่าครั้งแรก (ใส่คีย์ Google AI ฟรี)</div>
+      <p class="small muted">1 คีย์ใช้ได้ <b class="nDev">2</b> เครื่อง · เปลี่ยนเครื่อง: กดปุ่ม "ย้ายเครื่อง" ในโปรแกรมเครื่องเดิม แล้วติดตั้งเครื่องใหม่จากหน้านี้</p>
+    </div>
+  </div>
+
+  <div class="card" id="groupCard" style="text-align:center">
+    <h2>👥 กลุ่มไลน์ผู้ใช้งานโปรแกรม</h2>
+    <p class="muted">แลกเปลี่ยนเทคนิคตัดคลิป ถามปัญหา และรู้ข่าวอัปเดตก่อนใคร — แอดไว้เลย</p>
+    <img src="data:image/png;base64,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" alt="QR กลุ่มไลน์ผู้ใช้งาน" width="180" height="180" style="display:block;margin:6px auto;border-radius:12px">
+    <a class="btn line" href="https://line.me/ti/g/jEPRgV5AsS" target="_blank" rel="noopener">เข้ากลุ่มไลน์</a>
+    <p class="small muted">อยู่บนคอม: สแกน QR ด้วยมือถือ</p>
+  </div>
+
+  <div class="card" id="helpCard">
+    <h2>ติดปัญหา?</h2>
+    <p class="muted" id="helpText">ติดต่อผู้ขาย แจ้งเลขคำสั่งซื้อ <b class="orderNo"></b></p>
+    <a class="btn line lineBtn" href="#" target="_blank" rel="noopener" hidden>ทักไลน์ผู้ขาย</a>
+  </div>
+
+  <footer><a id="policyLink" href="#" target="_blank" rel="noopener">ข้อตกลงการใช้งานและนโยบาย</a></footer>
+</div>
+
+<script>
+/* 🌐 หน้าขายบน GitHub Pages: คุยกับระบบขาย (Apps Script) ผ่าน fetch แทน google.script.run */
+(function () {
+  var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
+  var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 4990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "page": ""}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
+  var q = new URLSearchParams(location.search);
+  window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '',
+                      order: q.get('o') || '', token: q.get('t') || '', status: { ok: false, state: 'pending', loading: true } };
+  function post(body) {
+    return fetch(EXEC, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow' })
+      .then(function (r) { return r.json(); });
+  }
+  var MAP = {
+    qrPayload: function (plan, key) { return { action: 'qr', plan: plan, key: key }; },
+    submitOrder: function (form) { return { action: 'order', form: form }; },
+    requestTrial: function (form) { return { action: 'trial', form: form }; },
+    getStatus: function (o, t) { return { action: 'status', order: o, token: t }; },
+    getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; }
+  };
+  function runner(ok, fail) {
+    var r = { withSuccessHandler: function (f) { return runner(f, fail); }, withFailureHandler: function (f) { return runner(ok, f); } };
+    Object.keys(MAP).forEach(function (k) {
+      r[k] = function () {
+        var body = MAP[k].apply(null, arguments);
+        post(body).then(function (res) { if (ok) ok(res); }, function (e) { if (fail) fail(e); });
+      };
+    });
+    return r;
+  }
+  window.google = window.google || {};
+  window.google.script = window.google.script || {};
+  window.google.script.run = runner(null, null);
+  window.pageLink = function (q) {                   // ลิงก์ภายในหน้า (เดิมชี้ exec?page=…)
+    q = String(q || '');
+    if (!q) return 'index.html';
+    if (q === 'page=policy') return 'policy.html';
+    if (q.indexOf('page=status') === 0) return 'status.html?' + q.replace(/^page=status&?/, '');
+    return 'index.html?' + q;
+  };
+  window.addEventListener('load', function () {          // ข้อมูลร้านสด (เปลี่ยนโหมดฟรี/ราคา/ไลน์ในชีตแล้วไม่ต้องสร้างหน้าใหม่)
+    post({ action: 'shop' }).then(function (r) {
+      if (!r || !r.ok || !r.shop) return;
+      var S = window.__BOOT__.shop;
+      Object.keys(S).forEach(function (k) { delete S[k]; });
+      Object.keys(r.shop).forEach(function (k) { S[k] = r.shop[k]; });
+      if (window.__BOOT__.qr && r.qr) Object.keys(r.qr).forEach(function (k) { window.__BOOT__.qr[k] = r.qr[k]; });
+      if (window.__refill) window.__refill();
+    }).catch(function () {});
+  });
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  var B = window.__BOOT__;
+  var S = B.shop || {};
+  var st = B.status || {};
+  var timer = null;
+
+  function $(id) { return document.getElementById(id); }
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function show(el, on) { if (typeof el === 'string') el = $(el); if (el) el.hidden = !on; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+  function money(n) {
+    var v = Math.round(Number(n) * 100) / 100, p = v.toFixed(2).split('.');
+    var i = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return p[1] === '00' ? i : i + '.' + p[1];
+  }
+  function exec(q) { return window.pageLink(q); }
+  function pageUrl() { return location.origin + location.pathname + '?o=' + encodeURIComponent(B.order || '') + '&t=' + encodeURIComponent(B.token || ''); }
+  function fact(label, value) { return '<span>' + esc(label) + ' <b>' + esc(value) + '</b></span>'; }
+
+  function fillShop() {
+    $('brandName').textContent = S.product || 'ตัดคลิป AI';
+    all('.nDev').forEach(function (el) { el.textContent = String(S.max_devices || 2); });
+    all('.lineBtn').forEach(function (a) { if (S.line_url) { a.href = S.line_url; a.textContent = S.line_label || ('ทักไลน์ ' + S.line); a.hidden = false; } });
+    if (!S.line_url && S.line) $('helpText').innerHTML += ' · ไลน์: <b>' + esc(S.line) + '</b>';
+    $('shopLink1').href = exec(); $('shopLink2').href = exec();
+    $('policyLink').href = exec('page=policy');
+    var ua = navigator.userAgent || '';
+    var mobile = /Android|iPhone|iPad|iPod/i.test(ua) || (navigator.maxTouchPoints > 1 && /Macintosh/.test(ua));
+    var isWin = /Windows/i.test(ua), isMac = /Macintosh|Mac OS X/i.test(ua) && !mobile;
+    if (mobile) show('mobileNote', true);
+    if (isWin) { $('osWin').classList.add('mine'); show('tagWin', true); }
+    if (isMac) { $('osMac').classList.add('mine'); show('tagMac', true); $('osWin').parentNode.insertBefore($('osMac'), $('osWin')); }
+  }
+
+  function render() {
+    ['vNotFound', 'vPending', 'vRejected', 'vApproved'].forEach(function (v) { show(v, false); });
+    all('.orderNo').forEach(function (el) { el.textContent = st.order || B.order || ''; });
+    if (!st || !st.ok) {
+      $('nfMsg').textContent = (st && st.error) || 'ลิงก์ไม่ถูกต้อง';
+      show('vNotFound', true);
+      return stopPoll();
+    }
+    var planTxt = st.plan_th + ' · ' + money(st.amount) + ' บาท';
+    if (st.state === 'pending') {
+      $('pendEta').textContent = 'ผู้ขายจะตรวจสลิป ' + (S.eta || '') + ' ตรวจเสร็จแล้วคีย์และปุ่มติดตั้งจะขึ้นในหน้านี้' + (S.line ? (S.contact_kind === 'phone' ? ' (ด่วน โทรหาผู้ขายได้)' : ' (ด่วน ทักไลน์ได้)') : '');
+      $('pendFacts').innerHTML = fact('เลขคำสั่งซื้อ', st.order) + fact('แพ็ก', planTxt) + (st.renew_key ? fact('คีย์ที่ต่ออายุ', st.renew_key) : '');
+      show('vPending', true);
+      return startPoll();
+    }
+    stopPoll();
+    if (st.state === 'rejected') {
+      $('rejWhy').textContent = st.note || 'ตรวจสอบการโอนเงินไม่ผ่าน';
+      show('vRejected', true);
+      return;
+    }
+    // อนุมัติแล้ว
+    $('okTitle').textContent = st.renew_key ? (st.upgrade ? 'อัปเกรดเป็นตลอดชีพแล้ว' : 'ต่ออายุคีย์แล้ว') : 'คีย์ของคุณพร้อมใช้งาน';
+    $('keyText').textContent = st.key;
+    var paid = st.key_plan === 'lifetime' || st.key_plan === 'owner';
+    var exp = st.free && !paid ? 'ใช้ฟรี ยังไม่เก็บเงิน' : (st.exp ? 'ใช้ได้ถึง ' + st.exp_th + ' (สิ้นวัน)' : 'ไม่มีวันหมดอายุ');   // 🎁 ช่วงใช้ฟรี
+    $('okFacts').innerHTML = fact('เลขคำสั่งซื้อ', st.order) + fact('แพ็ก', paid ? 'ตลอดชีพ' : (st.key_plan === 'trial' ? (st.free ? 'ใช้ฟรี' : 'ทดลองใช้ฟรี') : 'รายเดือน')) +
+      fact('สถานะ', exp) + fact('ใช้ได้', (st.max_devices || S.max_devices || 2) + ' เครื่อง');
+    if (st.renew_url && !st.free) {
+      $('renewLink').href = st.renew_url;
+      if (st.key_plan === 'trial') { $('renewLine').firstChild.textContent = 'ซื้อต่อด้วยคีย์นี้ได้ทุกเมื่อ (วันทดลองที่เหลือไม่หาย): '; $('renewLink').textContent = 'สั่งซื้อด้วยคีย์นี้'; }
+      show('renewLine', true);
+    }
+    if (!st.key_ok) {
+      $('keyWarn').innerHTML = esc(st.key_error || 'คีย์นี้ใช้งานไม่ได้') + (st.key_code === 'expired' && st.renew_url ? ' — <a href="' + esc(st.renew_url) + '" target="_top">ต่ออายุตอนนี้</a>' : '');
+      show('keyWarn', true);
+      show('installCard', false);
+    } else {
+      show('keyWarn', false);
+      show('installCard', true);
+    }
+    show('vApproved', true);
+  }
+
+  function startPoll() {
+    $('lastCheck').textContent = new Date().toLocaleTimeString('th-TH', { hour12: false });
+    if (!timer) timer = setInterval(refresh, 30000);
+  }
+  function stopPoll() { if (timer) { clearInterval(timer); timer = null; } }
+  function refresh() {
+    if (typeof google === 'undefined' || !google.script) return;
+    google.script.run.withSuccessHandler(function (r) {
+      if (r && (r.ok || !st.ok)) st = r;
+      render();
+    }).withFailureHandler(function () { /* เน็ตหลุด — รอบหน้าลองใหม่ */ }).getStatus(B.order, B.token);
+  }
+
+  // ───── ดาวน์โหลดตัวติดตั้ง (server สร้างไฟล์ → base64 → Blob) ─────
+  function saveBlob(blob, name) {
+    var url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = name; a.rel = 'noopener';
+    document.body.appendChild(a); a.click();
+    setTimeout(function () { URL.revokeObjectURL(url); a.remove(); }, 10000);
+  }
+  function b64ToBytes(b64) {
+    var bin = atob(b64), out = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) out[i] = bin.charCodeAt(i);
+    return out;
+  }
+  function download(os) {
+    var btn = $(os === 'win' ? 'dlWin' : 'dlMac'), msg = $(os === 'win' ? 'msgWin' : 'msgMac');
+    var label = btn.textContent;
+    btn.disabled = true; btn.textContent = 'กำลังเตรียมไฟล์…'; msg.hidden = true;
+    function end(ok, text) { btn.disabled = false; btn.textContent = label; msg.className = 'alert ' + (ok ? 'ok' : 'err'); msg.textContent = text; msg.hidden = false; }
+    google.script.run.withSuccessHandler(function (r) {
+      if (!r || !r.ok) return end(false, (r && r.error) || 'ดาวน์โหลดไม่สำเร็จ ลองใหม่อีกครั้ง');
+      try {
+        saveBlob(new Blob([b64ToBytes(r.b64)], { type: r.mime || 'application/octet-stream' }), r.name);
+        end(true, 'ดาวน์โหลดแล้ว: ' + r.name + ' (ดูในโฟลเดอร์ Downloads) แล้วทำตามขั้นตอนด้านล่าง');
+      } catch (e) { end(false, 'บันทึกไฟล์ไม่ได้ ลองเบราว์เซอร์ Chrome / Edge / Safari'); }
+    }).withFailureHandler(function () { end(false, 'ติดต่อระบบไม่ได้ ลองใหม่อีกครั้ง'); }).getInstaller(B.order, B.token, os);
+  }
+
+  function copyText(txt, btn) {
+    function ok() { var o = btn.textContent; btn.textContent = 'คัดลอกแล้ว'; setTimeout(function () { btn.textContent = o; }, 1800); }
+    function fallback() {
+      var ta = document.createElement('textarea');
+      ta.value = txt; ta.setAttribute('readonly', ''); ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      var done = false;
+      try { done = document.execCommand('copy'); } catch (e) { done = false; }
+      ta.remove();
+      if (done) ok(); else btn.textContent = 'กดค้างที่คีย์เพื่อคัดลอก';
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, fallback); else fallback();
+  }
+
+  fillShop();
+  render();
+  refresh();
+  $('dlWin').addEventListener('click', function () { download('win'); });
+  $('dlMac').addEventListener('click', function () { download('mac'); });
+  $('cpMac').addEventListener('click', function () {
+    var t = $('macCmd').textContent, btn = $('cpMac');
+    var done = function () { btn.textContent = '✅ คัดลอกแล้ว — ไปวางใน Terminal'; };
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(t).then(done, function () { fallback(); });
+    else fallback();
+    function fallback() { var r = document.createRange(); r.selectNodeContents($('macCmd')); var sel = getSelection(); sel.removeAllRanges(); sel.addRange(r);
+      try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = 'เลือกข้อความด้านล่างแล้วกด ⌘+C'; } }
+  });
+  $('copyKey').addEventListener('click', function () { copyText(st.key || '', $('copyKey')); });
+  $('copyPage').addEventListener('click', function () { copyText(pageUrl(), $('copyPage')); });
+  $('refreshNow').addEventListener('click', function (e) { e.preventDefault(); $('lastCheck').textContent = 'กำลังตรวจ…'; refresh(); });
+})();
+</script>
+</body>
+</html>
