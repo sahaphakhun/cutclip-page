@@ -478,7 +478,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
         <div class="paygrid">
           <div class="qrbox">
             <p class="step" style="margin-bottom:4px">2. สแกนจ่ายด้วยแอปธนาคาร</p>
-            <div class="pp">PromptPay · พร้อมเพย์</div>
+            <div class="pp">TrueMoney · PromptPay · พร้อมเพย์</div>
             <div id="qr" aria-label="QR พร้อมเพย์"></div>
             <div>ยอดโอน <span class="big" id="payAmount">990.00</span> บาท</div>
             <div id="payName" class="sub" style="margin:2px 0 8px"></div>
@@ -806,9 +806,16 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
     drawQR(cur.payload);
     show('pay', true);
   }
+  // 💳 เจ้าของสั่ง 9 ต.ค. 69: รับเงินด้วย QR ทรูมันนี่ตัวเดียวกับเลี้ยงกาแฟ (ลูกค้าพิมพ์ยอดเอง) · ลบค่านี้ = กลับไปใช้ QR พร้อมเพย์ใส่ยอดอัตโนมัติ
+  var PAY_IMG = 'https://sahaphakhun.github.io/cutclip-page/pay_qr.jpg';
   function drawQR(text) {
     var box = $('qr');
     box.innerHTML = '';
+    if (PAY_IMG) {
+      box.innerHTML = '<img src="' + PAY_IMG + '" alt="QR ทรูมันนี่ / พร้อมเพย์" style="max-width:100%;border-radius:12px">' +
+        '<p class="alert info" style="margin-top:8px"><b>สแกนแล้วพิมพ์ยอด ' + esc(Number(cur.amount).toFixed(2)) + ' บาท เอง</b> (QR นี้ไม่ได้ใส่ยอดไว้)</p>';
+      return;
+    }
     if (typeof QRCode === 'undefined') { box.innerHTML = '<p class="alert err">โหลดรูป QR ไม่ได้ — รีเฟรชหน้า หรือทักไลน์ผู้ขาย</p>'; return; }
     try {
       new QRCode(box, { text: text, width: 460, height: 460, colorDark: '#000000', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M });
@@ -819,6 +826,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
 
   // บันทึก QR เป็นรูป (มีขอบขาว + ยอดเงิน) ไว้เปิดในแอปธนาคาร
   function saveQr() {
+    if (PAY_IMG) { var a = document.createElement('a'); a.href = PAY_IMG; a.download = 'QR-จ่ายเงิน.jpg'; a.target = '_blank'; document.body.appendChild(a); a.click(); a.remove(); return; }
     var src = document.querySelector('#qr canvas') || document.querySelector('#qr img');
     if (!src) return;
     var pad = 36, size = 460, c = document.createElement('canvas');
