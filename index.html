@@ -755,6 +755,8 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
       if (mr) { mr.closest('label').hidden = true; var lr = document.querySelector('input[name=plan][value=lifetime]'); if (lr) lr.checked = true; }
       var mc = $('pMonthly') && $('pMonthly').closest('.price-card');
       if (mc && !mc.contains($('pLifetime'))) mc.hidden = true;
+      var rr = document.querySelector('input[name=rplan][value=renew]');      // ต่ออายุรายเดือนราคาเท่าโปรตลอดชีพ → ซ่อน ให้อัปเกรดแทน
+      if (rr) { rr.closest('label').hidden = true; var rl = document.querySelector('input[name=rplan][value=lifetime]'); if (rl) rl.checked = true; }
     }
     $('featList').innerHTML = FEATURES.map(function (f, i) {
       return '<article class="feat"><div class="ic">' + (ICONS[i] || ICON) + '</div><div><h3>' + esc(f[0]) + '</h3><p>' + esc(f[1]) + '</p>' +
@@ -1054,6 +1056,9 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
   if (B.renew && S.promptpay_ok) {
     setTab('renew');
     $('renewKey').value = B.renew;
+    var upLife = /[?&]up=lifetime/.test(location.search) || (S.lifetime_old > (S.prices || {}).lifetime);   // 🛒 ซื้อจากในโปรแกรม / ช่วงโปรตลอดชีพ → เลือกอัปเกรดตลอดชีพให้
+    var lr = document.querySelector('input[name=rplan][value=lifetime]');
+    if (upLife && lr) lr.checked = true;
     setTimeout(function () { go('buy'); checkKey(); }, 150);
   }
 })();
