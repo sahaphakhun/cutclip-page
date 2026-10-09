@@ -592,7 +592,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
 /* 🌐 หน้าขายบน GitHub Pages: คุยกับระบบขาย (Apps Script) ผ่าน fetch แทน google.script.run */
 (function () {
   var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
-  var SNAP = {"ok": true, "shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 4990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": {"monthly": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015", "lifetime": "00020101021229370016A00000067701011101130066834296664530376454074990.005802TH63046D54"}};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
+  var SNAP = {"ok": true, "shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": {"monthly": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015", "lifetime": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015"}};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
   var q = new URLSearchParams(location.search);
   window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '',
                       order: q.get('o') || '', token: q.get('t') || '', status: { ok: false, state: 'pending', loading: true } };
@@ -708,7 +708,11 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
     var td = Number(S.trial_days) || (free ? 7 : 0);
     all('.trialOnly, .buyOnly, .freeOnly').forEach(function (el) {
       var c = el.classList;
-      el.hidden = (c.contains('trialOnly') && !td) || (c.contains('buyOnly') && free) || (c.contains('freeOnly') && !free);
+      el.hidden = (c.contains('trialOnly') && !td) || (c.contains('buyOnly') && free && !S.sell) || (c.contains('freeOnly') && !free);
+    });
+    if (free && S.sell) all('.buyOnly').forEach(function (el) {   // ใช้ฟรี + เปิดขายโปร: คู่ข้อความ ฟรี/จ่ายเงิน โชว์แค่ฝั่งฟรี (ส่วนราคา/สั่งซื้อยังโชว์)
+      var sib = [el.previousElementSibling, el.nextElementSibling];
+      if (sib.some(function (x) { return x && x.classList.contains('freeOnly'); })) el.hidden = true;
     });
     if (free) { $('trialBtn').textContent = 'รับคีย์ใช้ฟรี'; $('trialDoneH').textContent = 'ได้คีย์ใช้ฟรีแล้ว!'; }
     setAll('.nTrial', String(td));
@@ -719,6 +723,16 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
     if (pr.monthly > 0) $('perDay').textContent = 'เฉลี่ยวันละประมาณ ' + Math.round(pr.monthly / (S.days || 30)) + ' บาท';
     var ratio = pr.monthly > 0 ? Math.round(pr.lifetime / pr.monthly) : 0;
     $('lifeCmp').textContent = ratio >= 2 ? 'ราคาเท่ากับรายเดือนประมาณ ' + ratio + ' เดือน' : 'ใช้ได้ตลอด ไม่มีรายจ่ายรายเดือน';
+    if (S.lifetime_old > pr.lifetime) {                       // 🔥 โปรพิเศษตลอดชีพ: ขีดฆ่าราคาปกติ + ซ่อนรายเดือน (ราคาเท่ากัน ตลอดชีพคุ้มกว่า)
+      var old = '<s style="opacity:.55;font-weight:400">' + esc(money(S.lifetime_old)) + '</s> ';
+      $('pLifetime').innerHTML = old + esc(money(pr.lifetime));
+      all('.mLifetime').forEach(function (el) { el.innerHTML = old + esc(money(pr.lifetime)); });
+      $('lifeCmp').textContent = '🔥 โปรพิเศษช่วงนี้ จ่ายครั้งเดียว ใช้ได้ตลอด';
+      var mr = document.querySelector('input[name=plan][value=monthly]');
+      if (mr) { mr.closest('label').hidden = true; var lr = document.querySelector('input[name=plan][value=lifetime]'); if (lr) lr.checked = true; }
+      var mc = $('pMonthly') && $('pMonthly').closest('.price-card');
+      if (mc && !mc.contains($('pLifetime'))) mc.hidden = true;
+    }
     $('featList').innerHTML = FEATURES.map(function (f, i) {
       return '<article class="feat"><div class="ic">' + (ICONS[i] || ICON) + '</div><div><h3>' + esc(f[0]) + '</h3><p>' + esc(f[1]) + '</p>' +
         (f[2] ? '<span class="note">' + esc(f[2]) + '</span>' : '') + '</div></article>';
