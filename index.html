@@ -478,7 +478,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
         <div class="paygrid">
           <div class="qrbox">
             <p class="step" style="margin-bottom:4px">2. สแกนจ่ายด้วยแอปธนาคาร</p>
-            <div class="pp">TrueMoney · PromptPay · พร้อมเพย์</div>
+            <div class="pp">PromptPay · พร้อมเพย์</div>
             <div id="qr" aria-label="QR พร้อมเพย์"></div>
             <div>ยอดโอน <span class="big" id="payAmount">990.00</span> บาท</div>
             <div id="payName" class="sub" style="margin:2px 0 8px"></div>
@@ -807,7 +807,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
     show('pay', true);
   }
   // 💳 เจ้าของสั่ง 9 ต.ค. 69: รับเงินด้วย QR ทรูมันนี่ตัวเดียวกับเลี้ยงกาแฟ (ลูกค้าพิมพ์ยอดเอง) · ลบค่านี้ = กลับไปใช้ QR พร้อมเพย์ใส่ยอดอัตโนมัติ
-  var PAY_IMG = 'https://sahaphakhun.github.io/cutclip-page/pay_qr.jpg';
+  var PAY_IMG = '';   // เจ้าของสั่งกลับมาใช้พร้อมเพย์เบอร์ (เงินเข้ากรุงศรี) 9 ต.ค. 69
   function drawQR(text) {
     var box = $('qr');
     box.innerHTML = '';
