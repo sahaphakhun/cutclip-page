@@ -241,6 +241,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
       <button class="btn primary freeOnly" type="button" data-go="trial" hidden>🎁 ใช้ฟรี — รับคีย์เลย</button>
       <button class="btn primary buyOnly" type="button" data-go="pricing">ดูราคาและสั่งซื้อ</button>
       <button class="btn ghost trialOnly buyOnly" type="button" data-go="trial" hidden>🎁 ทดลองใช้ฟรี <span class="nTrial">7</span> วัน</button>
+      <button class="btn ghost" type="button" data-go="download">⬇️ ดาวน์โหลดโปรแกรม</button>
     </div>
     <p class="renewHint freeOnly" hidden>🎁 ช่วงพัฒนา ใช้ฟรีเรื่อย ๆ ยังไม่เก็บเงิน — กรอกชื่อกับเบอร์/ไลน์ ได้คีย์ทันที</p>
     <p class="renewHint buyOnly">มีคีย์อยู่แล้ว? <button class="linkBtn" type="button" data-renew>ต่ออายุคีย์เดิม</button></p>
@@ -336,6 +337,26 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
       <li><b>ดาวน์โหลดตัวติดตั้ง</b><span>Windows / Mac แล้วเปิดไฟล์ รอ 5–15 นาที</span></li>
       <li><b>ใส่คีย์ Google AI (ฟรี)</b><span>กดปุ่ม 🔑 ใส่คีย์ AI ในโปรแกรม แล้วเริ่มตัดคลิปได้เลย</span></li>
     </ol>
+  </div>
+</section>
+
+<section class="section" id="download">
+  <div class="wrap">
+    <h2>⬇️ ดาวน์โหลดโปรแกรม</h2>
+    <p class="sub">สำหรับคนที่สมัคร/ซื้อแล้ว — ติดตั้งเสร็จ เปิดโปรแกรมแล้วใส่คีย์ของคุณ</p>
+    <div class="cta">
+      <a class="btn primary" id="dlWin" href="https://sahaphakhun.github.io/cutclip-page/CutAI-Setup-Windows.zip" download>⬇️ Windows</a>
+      <a class="btn ghost" id="dlMac" href="https://sahaphakhun.github.io/cutclip-page/CutAI-Setup-Mac.command" download>⬇️ Mac</a>
+    </div>
+    <div class="card" style="margin-top:16px">
+      <h3 style="margin-top:0">🔑 ลืมคีย์?</h3>
+      <div class="field">
+        <label for="fgContact">เบอร์โทรหรือไลน์ที่ใช้ตอนสมัคร</label>
+        <input type="text" id="fgContact" maxlength="100" autocomplete="tel">
+      </div>
+      <button class="btn ghost" type="button" id="fgBtn">ส่งลิงก์รับคีย์เข้าอีเมล</button>
+      <p class="hint" id="fgMsg" style="margin-top:8px"></p>
+    </div>
   </div>
 </section>
 
@@ -594,6 +615,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
   var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
   var SNAP = {"ok": true, "shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": {"monthly": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015", "lifetime": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015"}};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
   var q = new URLSearchParams(location.search);
+  window.__PAGES__ = true;                             // หน้านี้อยู่บน GitHub Pages — มีไฟล์ตัวติดตั้งสาธารณะข้าง ๆ
   window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '',
                       order: q.get('o') || '', token: q.get('t') || '', status: { ok: false, state: 'pending', loading: true } };
   function post(body) {
@@ -605,7 +627,8 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
     submitOrder: function (form) { return { action: 'order', form: form }; },
     requestTrial: function (form) { return { action: 'trial', form: form }; },
     getStatus: function (o, t) { return { action: 'status', order: o, token: t }; },
-    getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; }
+    getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; },
+    forgotKey: function (c) { return { action: 'forgot', contact: c }; }
   };
   function runner(ok, fail) {
     var r = { withSuccessHandler: function (f) { return runner(f, fail); }, withFailureHandler: function (f) { return runner(ok, f); } };
@@ -990,6 +1013,13 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
   // ───── ผูกปุ่ม ─────
   fill();
   sticky();
+  $('fgBtn').addEventListener('click', function () {                   // 🔑 ลืมคีย์ → ส่งลิงก์หน้ารับคีย์เข้าอีเมล
+    var v = $('fgContact').value.trim(), m = $('fgMsg'), b = $('fgBtn');
+    if (v.length < 4) { m.textContent = 'กรอกเบอร์โทรหรือไลน์ที่ใช้ตอนสมัคร'; return; }
+    b.disabled = true; m.textContent = 'กำลังส่ง…';
+    google.script.run.withSuccessHandler(function (r) { b.disabled = false; m.textContent = (r && (r.message || r.error)) || 'ลองใหม่อีกครั้ง'; })
+      .withFailureHandler(function () { b.disabled = false; m.textContent = 'ส่งไม่สำเร็จ ลองใหม่อีกครั้ง'; }).forgotKey(v);
+  });
   all('[data-go]').forEach(function (b) { b.addEventListener('click', function () { go(b.getAttribute('data-go')); }); });
   all('[data-renew]').forEach(function (b) { b.addEventListener('click', function () { setTab('renew'); go('buy'); setTimeout(function () { $('renewKey').focus(); }, 400); }); });
   all('[data-plan]').forEach(function (b) { b.addEventListener('click', function () { setTab('new'); pickPlan(b.getAttribute('data-plan')); go('buy'); }); });

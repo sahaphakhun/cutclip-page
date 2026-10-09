@@ -172,6 +172,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
   var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
   var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
   var q = new URLSearchParams(location.search);
+  window.__PAGES__ = true;                             // หน้านี้อยู่บน GitHub Pages — มีไฟล์ตัวติดตั้งสาธารณะข้าง ๆ
   window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '',
                       order: q.get('o') || '', token: q.get('t') || '', status: { ok: false, state: 'pending', loading: true } };
   function post(body) {
@@ -183,7 +184,8 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
     submitOrder: function (form) { return { action: 'order', form: form }; },
     requestTrial: function (form) { return { action: 'trial', form: form }; },
     getStatus: function (o, t) { return { action: 'status', order: o, token: t }; },
-    getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; }
+    getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; },
+    forgotKey: function (c) { return { action: 'forgot', contact: c }; }
   };
   function runner(ok, fail) {
     var r = { withSuccessHandler: function (f) { return runner(f, fail); }, withFailureHandler: function (f) { return runner(ok, f); } };
