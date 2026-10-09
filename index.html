@@ -613,7 +613,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
 /* 🌐 หน้าขายบน GitHub Pages: คุยกับระบบขาย (Apps Script) ผ่าน fetch แทน google.script.run */
 (function () {
   var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
-  var SNAP = {"ok": true, "shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": {"monthly": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015", "lifetime": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015"}};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
+  var SNAP = {"ok": true, "shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "promo_end": "2026-10-15", "promo_end_ts": 1792083599, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": {"monthly": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015", "lifetime": "00020101021229370016A0000006770101110113006683429666453037645406990.005802TH63044015"}};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
   var q = new URLSearchParams(location.search);
   window.__PAGES__ = true;                             // หน้านี้อยู่บน GitHub Pages — มีไฟล์ตัวติดตั้งสาธารณะข้าง ๆ
   window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '',
@@ -713,6 +713,11 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
   function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
   function show(el, on) { if (typeof el === 'string') el = $(el); if (el) el.hidden = !on; }
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+  function thaiDate(ymd) {
+    var p = String(ymd || '').split('-'); if (p.length !== 3) return ymd || '';
+    var M = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    return (+p[2]) + ' ' + M[+p[1] - 1] + ' ' + (+p[0] + 543);
+  }
   function money(n) {
     var v = Math.round(Number(n) * 100) / 100, p = v.toFixed(2).split('.');
     var i = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
@@ -751,6 +756,17 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
       $('pLifetime').innerHTML = old + esc(money(pr.lifetime));
       all('.mLifetime').forEach(function (el) { el.innerHTML = old + esc(money(pr.lifetime)); });
       $('lifeCmp').textContent = '🔥 โปรพิเศษช่วงนี้ จ่ายครั้งเดียว ใช้ได้ตลอด';
+      if (S.promo_end_ts) {                                   // ⏰ ตัวนับถอยหลังวันหมดโปร (เวลาไทย)
+        var cd = document.createElement('div'); cd.id = 'promoCd'; cd.style.cssText = 'margin-top:6px;font-weight:700;color:#b45309';
+        $('lifeCmp').after(cd);
+        var tick = function () {
+          var left = S.promo_end_ts - Math.floor(Date.now() / 1000);
+          if (left <= 0) { cd.textContent = 'หมดเขตแล้ว'; return; }
+          var d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60);
+          cd.textContent = '⏰ หมดเขต ' + thaiDate(S.promo_end) + ' · เหลือ ' + (d ? d + ' วัน ' : '') + h + ' ชม. ' + m + ' นาที';
+        };
+        tick(); setInterval(tick, 30000);
+      }
       var mr = document.querySelector('input[name=plan][value=monthly]');
       if (mr) { mr.closest('label').hidden = true; var lr = document.querySelector('input[name=plan][value=lifetime]'); if (lr) lr.checked = true; }
       var mc = $('pMonthly') && $('pMonthly').closest('.price-card');
