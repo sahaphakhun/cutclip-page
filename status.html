@@ -170,22 +170,27 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
 /* 🌐 หน้าขายบน GitHub Pages: คุยกับระบบขาย (Apps Script) ผ่าน fetch แทน google.script.run */
 (function () {
   var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
-  var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "promo_end": "2026-10-15", "promo_end_ts": 1792083599, "page": "https://sahaphakhun.github.io/cutclip-page/"}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
+  var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "promo_end": "2026-10-15", "promo_end_ts": 1792083599, "page": "https://sahaphakhun.github.io/cutclip-page/", "aff": {"on": true, "discount": 10, "cookie_days": 60, "pct": [20, 30]}}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
   var q = new URLSearchParams(location.search);
   window.__PAGES__ = true;                             // หน้านี้อยู่บน GitHub Pages — มีไฟล์ตัวติดตั้งสาธารณะข้าง ๆ
-  window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '',
+  window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '', ref: q.get('ref') || '', join: q.get('join') || '',
                       order: q.get('o') || '', token: q.get('t') || '', status: { ok: false, state: 'pending', loading: true } };
   function post(body) {
     return fetch(EXEC, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow' })
       .then(function (r) { return r.json(); });
   }
   var MAP = {
-    qrPayload: function (plan, key) { return { action: 'qr', plan: plan, key: key }; },
+    qrPayload: function (plan, key, ref, contact) { return { action: 'qr', plan: plan, key: key, ref: ref || '', contact: contact || '' }; },
     submitOrder: function (form) { return { action: 'order', form: form }; },
     requestTrial: function (form) { return { action: 'trial', form: form }; },
     getStatus: function (o, t) { return { action: 'status', order: o, token: t }; },
     getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; },
-    forgotKey: function (c) { return { action: 'forgot', contact: c }; }
+    forgotKey: function (c) { return { action: 'forgot', contact: c }; },
+    affCheck: function (code, contact, key) { return { action: 'aff_check', code: code, contact: contact, key: key }; },
+    affSignup: function (form) { return { action: 'aff_signup', form: form }; },
+    affClick: function (code) { return { action: 'aff_click', code: code }; },
+    affDash: function (t) { return { action: 'aff_dash', token: t }; },
+    affSetPromptPay: function (t, pp) { return { action: 'aff_pp', token: t, promptpay: pp }; }
   };
   function runner(ok, fail) {
     var r = { withSuccessHandler: function (f) { return runner(f, fail); }, withFailureHandler: function (f) { return runner(ok, f); } };
@@ -204,6 +209,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
     q = String(q || '');
     if (!q) return 'index.html';
     if (q === 'page=policy') return 'policy.html';
+    if (q.indexOf('page=aff') === 0) return 'aff.html?' + q.replace(/^page=aff&?/, '');
     if (q.indexOf('page=status') === 0) return 'status.html?' + q.replace(/^page=status&?/, '');
     return 'index.html?' + q;
   };

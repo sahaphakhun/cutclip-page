@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<title>ตัวแทนขาย · ตัดคลิป AI</title>
+<meta name="description" content="แดชบอร์ดตัวแทนขายโปรแกรมตัดคลิป AI">
+<meta property="og:title" content="ตัวแทนขาย · ตัดคลิป AI">
+<meta property="og:description" content="แดชบอร์ดตัวแทนขายโปรแกรมตัดคลิป AI">
+<meta property="og:type" content="website">
+
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Kanit:wght@500;600;700&family=Sarabun:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#fffaf2; --surface:#ffffff; --text:#1c1917; --muted:#57534e; --line:#ece3d4;
+  --accent:#f59e0b; --accent-strong:#d97706; --accent-ink:#92400e; --accent-soft:#fef3c7;
+  --violet:#6d28d9; --violet-soft:#f1ebff;
+  --ok:#15803d; --ok-soft:#dcfce7; --err:#b91c1c; --err-soft:#fee2e2;
+  --radius:18px; --shadow:0 1px 2px rgba(28,25,23,.05),0 12px 32px rgba(146,64,14,.08);
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--text);font:16px/1.65 "Sarabun",-apple-system,BlinkMacSystemFont,"Segoe UI","Noto Sans Thai","Leelawadee UI",Thonburi,Tahoma,sans-serif}
+h1,h2,h3,.btn,.brand,.pill,.big{font-family:"Kanit","Sarabun",-apple-system,"Noto Sans Thai",sans-serif}
+.wrap{max-width:720px;margin:0 auto;padding:16px 16px 40px}
+h1,h2,h3{line-height:1.3;margin:0}
+h1{font-size:clamp(22px,6vw,28px)}
+h2{font-size:19px;margin-bottom:8px}
+p{margin:0 0 8px}
+a{color:var(--accent-ink)}
+[hidden]{display:none !important}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:16px;margin-bottom:14px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:18px 16px;box-shadow:var(--shadow);margin-bottom:14px}
+.muted{color:var(--muted)}
+.small{font-size:14px}
+.pill{display:inline-block;border-radius:999px;padding:2px 12px;font-weight:700;font-size:14px;background:var(--violet-soft);color:var(--violet)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:44px;padding:9px 18px;border-radius:12px;border:0;font:inherit;font-weight:700;cursor:pointer;text-decoration:none}
+.btn.primary{background:var(--accent);color:#1c1917}
+.btn.ghost{background:var(--surface);color:var(--text);border:1.5px solid #d9cfbf}
+.btn.small{min-height:36px;padding:5px 12px;font-size:14px}
+.btn:disabled{opacity:.6}
+.code{font:800 clamp(26px,9vw,36px)/1.1 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;letter-spacing:3px;background:var(--accent-soft);border:2px dashed var(--accent);border-radius:14px;padding:8px 14px;display:inline-block}
+.row{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.linkbox{display:flex;gap:8px;margin:8px 0}
+.linkbox input{flex:1;min-width:0;font-size:14px;padding:8px 10px;border:1px solid #d6d3d1;border-radius:10px;font-family:inherit}
+input[type=text]{font:inherit;padding:9px 10px;border:1px solid #d6d3d1;border-radius:10px;width:100%}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.stat{background:#fffdf8;border:1px solid var(--line);border-radius:14px;padding:10px 8px;text-align:center}
+.stat b{display:block;font:700 20px/1.2 "Kanit",sans-serif}
+.stat span{font-size:13px;color:var(--muted)}
+.stat.ready{border-color:var(--ok);background:var(--ok-soft)}
+.bar{height:14px;background:#efe7da;border-radius:99px;overflow:hidden;margin:8px 0 4px}
+.bar i{display:block;height:100%;background:linear-gradient(90deg,#f59e0b,#8b5cf6);border-radius:99px;transition:width .6s}
+.qrwrap{text-align:center}
+.qrwrap img{width:100%;max-width:320px;border-radius:18px;box-shadow:var(--shadow)}
+table{width:100%;border-collapse:collapse;font-size:15px}
+td{padding:6px 4px;border-bottom:1px solid var(--line)}
+td.n{text-align:right;font-weight:700;white-space:nowrap}
+tr.me td{background:var(--accent-soft);font-weight:700}
+.tpl{border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin:8px 0;background:#fffdf8}
+.tpl p{white-space:pre-wrap;margin:0 0 8px;font-size:15px}
+.alert{border-radius:12px;padding:10px 14px;margin:10px 0;font-size:15px}
+.alert.err{background:var(--err-soft);color:var(--err)}
+.alert.ok{background:var(--ok-soft);color:var(--ok)}
+.alert.info{background:var(--accent-soft);color:var(--accent-ink)}
+.spin{width:40px;height:40px;border-radius:50%;border:5px solid var(--accent-soft);border-top-color:var(--accent);animation:sp 1s linear infinite;margin:20px auto}
+@keyframes sp{to{transform:rotate(360deg)}}
+details summary{cursor:pointer;font-weight:700}
+footer{color:var(--muted);font-size:14px;text-align:center;margin-top:16px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand">
+    <svg viewBox="0 0 36 36" width="30" height="30" aria-hidden="true"><rect width="36" height="36" rx="10" fill="#f59e0b"/><text x="18" y="25" text-anchor="middle" font-size="18">💸</text></svg>
+    <span><span id="brandName">ตัดคลิป AI</span> · ตัวแทนขาย</span>
+  </div>
+
+  <div id="vLoad"><div class="spin" aria-hidden="true"></div><p class="muted" style="text-align:center">กำลังโหลด…</p></div>
+  <div class="card" id="vErr" hidden><h1>เปิดแดชบอร์ดไม่ได้</h1><p class="muted" id="errMsg" style="margin-top:8px"></p><p><a class="btn ghost" id="shopLink" href="#" target="_top">ไปหน้าขาย</a></p></div>
+
+  <div id="vMain" hidden>
+    <div class="card">
+      <p class="muted" style="margin:0">สวัสดีคุณ <b id="hiName"></b> 👋</p>
+      <div class="row" style="margin:6px 0 4px"><span class="pill" id="tierPill"></span><span class="small muted" id="tierPct"></span></div>
+      <p class="small muted" style="margin:8px 0 4px">รหัสแนะนำของคุณ (เพื่อนใส่ตอนสั่งซื้อ ได้ลด <b class="disc">10</b>%)</p>
+      <div class="row"><span class="code" id="code"></span><button class="btn ghost small" type="button" id="cpCode">คัดลอกรหัส</button></div>
+      <p class="small muted" style="margin:12px 0 0">ลิงก์ชวนเพื่อน (กดแล้วระบบจำรหัสคุณให้ <span id="cookieDays">60</span> วัน)</p>
+      <div class="linkbox"><input type="text" id="link" readonly><button class="btn primary small" type="button" id="cpLink">คัดลอก</button></div>
+      <button class="btn ghost small" type="button" id="share" hidden>📤 แชร์</button>
+    </div>
+
+    <div class="card qrwrap">
+      <h2>QR ชวนเพื่อน</h2>
+      <p class="small muted">กดค้างที่รูปเพื่อบันทึก แล้วเอาไปโพสต์/ส่งในแชทได้เลย</p>
+      <div id="qrTmp" hidden></div>
+      <img id="qrImg" alt="QR ลิงก์ชวนเพื่อน">
+    </div>
+
+    <div class="card">
+      <h2>📈 เดือนนี้</h2>
+      <p style="margin:0">ขายได้ <b class="big" id="salesM" style="font-size:24px">0</b> คน · คลิกลิงก์ <b id="clicks">0</b> ครั้ง</p>
+      <div class="bar" aria-hidden="true"><i id="bar" style="width:0"></i></div>
+      <p class="small" id="nextTxt"></p>
+    </div>
+
+    <div class="card">
+      <h2>💰 ค่าคอม</h2>
+      <div class="stats">
+        <div class="stat"><b id="mPend">0</b><span>รอตรวจ (พัก <span class="holdDays">7</span> วัน)</span></div>
+        <div class="stat ready"><b id="mReady">0</b><span>พร้อมจ่าย</span></div>
+        <div class="stat"><b id="mPaid">0</b><span>จ่ายแล้ว</span></div>
+      </div>
+      <p class="small muted" style="margin-top:10px">รอบโอนถัดไป <b id="payday"></b> (ทุกวันที่ 1 และ 16) เข้าพร้อมเพย์ของคุณ · ค่าคอมเดือนนี้รวม <b id="mMonth">0</b> บาท</p>
+      <div id="ppBox" hidden>
+        <div class="alert info">ยังไม่ได้ตั้งพร้อมเพย์รับค่าคอม — ใส่เบอร์มือถือหรือเลขบัตร 13 หลัก</div>
+        <div class="linkbox"><input type="text" id="ppIn" inputmode="numeric" maxlength="20" placeholder="08xxxxxxxx"><button class="btn primary small" type="button" id="ppSave">บันทึก</button></div>
+        <p class="small" id="ppMsg"></p>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>👥 ทีมของฉัน</h2>
+      <p class="small muted">ชวนคนมาเป็นตัวแทนด้วยลิงก์นี้ — เดือนไหนคุณขายเองได้อย่างน้อย 1 คน รับเพิ่ม <b class="teamPct">5</b>% จากยอดขายของลูกทีม</p>
+      <div class="linkbox"><input type="text" id="joinLink" readonly><button class="btn ghost small" type="button" id="cpJoin">คัดลอก</button></div>
+      <p id="teamSum" class="small"></p>
+      <table id="teamTbl"></table>
+    </div>
+
+    <div class="card">
+      <h2>🏆 อันดับตัวแทนเดือนนี้</h2>
+      <table id="board"></table>
+      <p class="small muted" id="boardEmpty" hidden>ยังไม่มีใครขายได้เดือนนี้ — เป็นคนแรกเลย!</p>
+    </div>
+
+    <div class="card">
+      <h2>📝 ข้อความพร้อมโพสต์</h2>
+      <p class="small muted">กดคัดลอกแล้ววางในโพสต์ได้เลย (แก้คำให้เป็นสไตล์คุณได้) · ห้ามอวดอ้างเกินจริง</p>
+      <div id="tpls"></div>
+      <p class="small"><a id="salesLink" href="#" target="_blank" rel="noopener">ดูหน้าขาย</a></p>
+    </div>
+
+    <div class="card">
+      <details>
+        <summary>กติกาค่าคอม</summary>
+        <ul class="small" id="rules" style="padding-left:20px;margin:8px 0 0"></ul>
+      </details>
+    </div>
+  </div>
+
+  <footer>เก็บลิงก์หน้านี้เป็นความลับ — ใครมีลิงก์ก็ดูยอดของคุณได้ · <a class="lineA" href="#" target="_blank" rel="noopener" hidden>ทักไลน์ผู้ขาย</a></footer>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+/* 🌐 หน้าขายบน GitHub Pages: คุยกับระบบขาย (Apps Script) ผ่าน fetch แทน google.script.run */
+(function () {
+  var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
+  var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "promo_end": "2026-10-15", "promo_end_ts": 1792083599, "page": "https://sahaphakhun.github.io/cutclip-page/", "aff": {"on": true, "discount": 10, "cookie_days": 60, "pct": [20, 30]}}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
+  var q = new URLSearchParams(location.search);
+  window.__PAGES__ = true;                             // หน้านี้อยู่บน GitHub Pages — มีไฟล์ตัวติดตั้งสาธารณะข้าง ๆ
+  window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '', ref: q.get('ref') || '', join: q.get('join') || '',
+                      order: q.get('o') || '', token: q.get('t') || '', status: { ok: false, state: 'pending', loading: true } };
+  function post(body) {
+    return fetch(EXEC, { method: 'POST', body: JSON.stringify(body), headers: { 'Content-Type': 'text/plain;charset=utf-8' }, redirect: 'follow' })
+      .then(function (r) { return r.json(); });
+  }
+  var MAP = {
+    qrPayload: function (plan, key, ref, contact) { return { action: 'qr', plan: plan, key: key, ref: ref || '', contact: contact || '' }; },
+    submitOrder: function (form) { return { action: 'order', form: form }; },
+    requestTrial: function (form) { return { action: 'trial', form: form }; },
+    getStatus: function (o, t) { return { action: 'status', order: o, token: t }; },
+    getInstaller: function (o, t, os) { return { action: 'installer', order: o, token: t, os: os }; },
+    forgotKey: function (c) { return { action: 'forgot', contact: c }; },
+    affCheck: function (code, contact, key) { return { action: 'aff_check', code: code, contact: contact, key: key }; },
+    affSignup: function (form) { return { action: 'aff_signup', form: form }; },
+    affClick: function (code) { return { action: 'aff_click', code: code }; },
+    affDash: function (t) { return { action: 'aff_dash', token: t }; },
+    affSetPromptPay: function (t, pp) { return { action: 'aff_pp', token: t, promptpay: pp }; }
+  };
+  function runner(ok, fail) {
+    var r = { withSuccessHandler: function (f) { return runner(f, fail); }, withFailureHandler: function (f) { return runner(ok, f); } };
+    Object.keys(MAP).forEach(function (k) {
+      r[k] = function () {
+        var body = MAP[k].apply(null, arguments);
+        post(body).then(function (res) { if (ok) ok(res); }, function (e) { if (fail) fail(e); });
+      };
+    });
+    return r;
+  }
+  window.google = window.google || {};
+  window.google.script = window.google.script || {};
+  window.google.script.run = runner(null, null);
+  window.pageLink = function (q) {                   // ลิงก์ภายในหน้า (เดิมชี้ exec?page=…)
+    q = String(q || '');
+    if (!q) return 'index.html';
+    if (q === 'page=policy') return 'policy.html';
+    if (q.indexOf('page=aff') === 0) return 'aff.html?' + q.replace(/^page=aff&?/, '');
+    if (q.indexOf('page=status') === 0) return 'status.html?' + q.replace(/^page=status&?/, '');
+    return 'index.html?' + q;
+  };
+  window.addEventListener('load', function () {          // ข้อมูลร้านสด (เปลี่ยนโหมดฟรี/ราคา/ไลน์ในชีตแล้วไม่ต้องสร้างหน้าใหม่)
+    post({ action: 'shop' }).then(function (r) {
+      if (!r || !r.ok || !r.shop) return;
+      var S = window.__BOOT__.shop;
+      Object.keys(S).forEach(function (k) { delete S[k]; });
+      Object.keys(r.shop).forEach(function (k) { S[k] = r.shop[k]; });
+      if (window.__BOOT__.qr && r.qr) Object.keys(r.qr).forEach(function (k) { window.__BOOT__.qr[k] = r.qr[k]; });
+      if (window.__refill) window.__refill();
+    }).catch(function () {});
+  });
+})();
+</script>
+<script>
+(function () {
+  'use strict';
+  var B = window.__BOOT__;
+  var S = B.shop || {};
+  var D = null;
+  function $(id) { return document.getElementById(id); }
+  function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
+  function show(el, on) { if (typeof el === 'string') el = $(el); if (el) el.hidden = !on; }
+  function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) { return '&#' + c.charCodeAt(0) + ';'; }); }
+  function setAll(sel, txt) { all(sel).forEach(function (el) { el.textContent = txt; }); }
+  function money(n) {
+    var v = Math.round(Number(n) * 100) / 100, p = v.toFixed(2).split('.');
+    var i = p[0].replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+    return p[1] === '00' ? i : i + '.' + p[1];
+  }
+  function thaiDate(ymd) {
+    var p = String(ymd || '').split('-'); if (p.length !== 3) return ymd || '';
+    var M = ['ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.', 'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'];
+    return (+p[2]) + ' ' + M[+p[1] - 1] + ' ' + (+p[0] + 543);
+  }
+  function exec(q) { return window.pageLink(q); }
+  function copyText(txt, btn) {
+    function ok() { var o = btn.textContent; btn.textContent = 'คัดลอกแล้ว ✓'; setTimeout(function () { btn.textContent = o; }, 1600); }
+    function fallback() {
+      var t = document.createElement('textarea'); t.value = txt; t.style.position = 'fixed'; t.style.opacity = '0';
+      document.body.appendChild(t); t.select();
+      try { if (document.execCommand('copy')) ok(); } catch (e) { btn.textContent = 'กดค้างเพื่อคัดลอก'; }
+      t.remove();
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(txt).then(ok, fallback); else fallback();
+  }
+  function fail(msg) { show('vLoad', false); show('vMain', false); $('errMsg').textContent = msg; show('vErr', true); }
+
+  // QR + กรอบน่ารัก → รูป <img> (กดค้างบันทึกได้ ไม่ต้องมีปุ่มดาวน์โหลด)
+  function drawQR(d) {
+    if (typeof QRCode === 'undefined') { $('qrImg').alt = 'โหลด QR ไม่ได้ — ใช้ลิงก์ด้านบนแทน'; return; }
+    var tmp = $('qrTmp'); tmp.innerHTML = '';
+    try { new QRCode(tmp, { text: d.link, width: 400, height: 400, colorDark: '#1c1917', colorLight: '#ffffff', correctLevel: QRCode.CorrectLevel.M }); } catch (e) { return; }
+    setTimeout(function () {
+      var src = tmp.querySelector('canvas') || tmp.querySelector('img');
+      if (!src) return;
+      var W = 560, H = 720, c = document.createElement('canvas'); c.width = W; c.height = H;
+      var g = c.getContext('2d');
+      var grad = g.createLinearGradient(0, 0, W, H); grad.addColorStop(0, '#fbbf24'); grad.addColorStop(1, '#a78bfa');
+      g.fillStyle = grad; g.fillRect(0, 0, W, H);
+      function rr(x, y, w, h, r) { g.beginPath(); g.moveTo(x + r, y); g.arcTo(x + w, y, x + w, y + h, r); g.arcTo(x + w, y + h, x, y + h, r); g.arcTo(x, y + h, x, y, r); g.arcTo(x, y, x + w, y, r); g.closePath(); }
+      g.fillStyle = '#ffffff'; rr(40, 120, W - 80, W - 80, 36); g.fill();
+      g.drawImage(src, 70, 150, W - 140, W - 140);
+      g.textAlign = 'center'; g.fillStyle = '#1c1917';
+      g.font = '700 40px Kanit, sans-serif'; g.fillText('✂️ ' + (d.product || 'ตัดคลิป AI'), W / 2, 70);
+      g.font = '600 26px Kanit, sans-serif'; g.fillText('สแกนรับส่วนลด ' + d.discount + '%', W / 2, 106);
+      g.font = '800 44px ui-monospace, Menlo, monospace'; g.fillText('รหัส ' + d.code, W / 2, H - 70);
+      g.font = '400 22px Sarabun, sans-serif'; g.fillText('💜 ตัดคลิปขายของด้วย AI', W / 2, H - 30);
+      try { $('qrImg').src = c.toDataURL('image/png'); } catch (e) { /* ไม่เป็นไร */ }
+    }, 60);
+  }
+
+  function templates(d) {
+    var p = d.product || 'ตัดคลิป AI', L = d.link, C = d.code, X = d.discount;
+    return [
+      'ใครขายของออนไลน์แล้วเหนื่อยกับการนั่งตัดคลิปบ้าง 🙋‍♀️\nลองโปรแกรม "' + p + '" ดูนะ โยนคลิปไลฟ์เข้าไป AI ช่วยเลือกท่อนเด็ด ตัดเป็นคลิปสั้น ใส่ซับไทยให้ ประหยัดเวลาไปเยอะมาก\n\nใช้รหัส ' + C + ' ลดอีก ' + X + '% 👉 ' + L,
+      'เมื่อก่อนนั่งตัดคลิปขายของเองทีละคลิป ตอนนี้ให้ AI ช่วย ✂️\n"' + p + '" ทำคลิปสั้นจากไลฟ์ มีซับ ตัวหนังสือ เพลง แคปชั่น พร้อมเอาไปโพสต์ TikTok / Reels\n\nสนใจกดลิงก์ ใส่รหัส ' + C + ' ลด ' + X + '%\n' + L,
+      'ตัดคลิปขายของไวขึ้นด้วย AI 🤖✨\nรหัสส่วนลด ' + X + '%: ' + C + '\n👉 ' + L,
+      '❓ ตัดต่อไม่เป็น ใช้ได้ไหม → ได้ กดไม่กี่ปุ่ม\n❓ ต้องมีฉากเขียวไหม → ไม่ต้อง\n❓ ใช้กับคลิปไลฟ์ได้ไหม → ได้ AI ช่วยเลือกท่อนขายให้\n\n"' + p + '" ลองดูได้ที่ ' + L + '\nใส่รหัส ' + C + ' ลด ' + X + '% 💜',
+      'แม่ค้าออนไลน์สายทำคลิป ต้องมีตัวช่วย 💪\n"' + p + '" ตัดคลิปบนคอมของเราเอง ใส่ซับ ทำแคปชั่นให้ ไม่ต้องจ้างคนตัด\n\nรหัส ' + C + ' ลด ' + X + '% 👉 ' + L
+    ];
+  }
+
+  function render(d) {
+    D = d;
+    show('vLoad', false); show('vErr', false); show('vMain', true);
+    $('hiName').textContent = d.first || d.name || '';
+    $('tierPill').textContent = d.tier.name;
+    $('tierPct').textContent = 'ค่าคอม ' + d.tier.pct + '% ต่อคน';
+    $('code').textContent = d.code;
+    $('link').value = d.link; $('joinLink').value = d.join_link;
+    setAll('.disc', String(d.discount)); setAll('.holdDays', String(d.hold_days)); setAll('.teamPct', String(d.team_pct));
+    $('cookieDays').textContent = String((S.aff && S.aff.cookie_days) || 60);
+    $('salesM').textContent = String(d.sales_month); $('clicks').textContent = String(d.clicks);
+    var cur = d.sales_month, tiers = d.tiers || [];
+    if (d.next) {
+      var base = tiers[d.tier.idx] ? tiers[d.tier.idx].min : 0, from = d.sales_month ? base : 0;
+      var pct = Math.max(4, Math.min(100, Math.round((cur - from) / Math.max(1, d.next.at - from) * 100)));
+      $('bar').style.width = (cur ? pct : 4) + '%';
+      $('nextTxt').innerHTML = cur ? 'อีก <b>' + d.next.need + '</b> คน ขึ้นเป็น <b>' + esc(d.next.name) + ' ' + d.next.pct + '%</b> (ยอดทั้งเดือนได้อัตราใหม่ย้อนหลัง)'
+        : 'ขายคนแรกเดือนนี้ได้ <b>' + d.tier.pct + '%</b>' + (d.bonus > 0 ? ' · ขายคนแรกภายใน ' + d.bonus_days + ' วันหลังสมัครรับโบนัส <b>' + money(d.bonus) + '</b> บาท' : '');
+    } else { $('bar').style.width = '100%'; $('nextTxt').innerHTML = '🎉 ขั้นสูงสุดแล้ว! ได้ <b>' + d.tier.pct + '%</b> ทั้งเดือน'; }
+    $('mPend').textContent = money(d.money.pending); $('mReady').textContent = money(d.money.ready); $('mPaid').textContent = money(d.money.paid);
+    $('mMonth').textContent = money(d.money.month); $('payday').textContent = thaiDate(d.next_payday);
+    show('ppBox', !d.promptpay_set);
+    $('teamSum').textContent = d.team.length ? 'ลูกทีม ' + d.team.length + ' คน · ขายได้รวมเดือนนี้ ' + d.team.reduce(function (s, x) { return s + x.sales; }, 0) + ' คน' : 'ยังไม่มีลูกทีม';
+    $('teamTbl').innerHTML = d.team.map(function (x) { return '<tr><td>' + esc(x.name) + '</td><td class="n">' + x.sales + ' คน</td></tr>'; }).join('');
+    $('board').innerHTML = d.leaderboard.map(function (x) {
+      var medal = ['🥇', '🥈', '🥉'][x.rank - 1] || x.rank + '.';
+      return '<tr' + (x.me ? ' class="me"' : '') + '><td>' + medal + ' ' + esc(x.name) + (x.me ? ' (คุณ)' : '') + '</td><td class="n">' + x.sales + ' คน</td></tr>';
+    }).join('');
+    show('boardEmpty', !d.leaderboard.length);
+    $('tpls').innerHTML = templates(d).map(function (t, i) {
+      return '<div class="tpl"><p id="tp' + i + '">' + esc(t) + '</p><button class="btn ghost small" type="button" data-tp="' + i + '">คัดลอกข้อความ ' + (i + 1) + '</button></div>';
+    }).join('');
+    all('[data-tp]').forEach(function (b) { b.addEventListener('click', function () { copyText(templates(D)[+b.getAttribute('data-tp')], b); }); });
+    $('salesLink').href = d.sales_url;
+    $('rules').innerHTML = (d.tiers || []).map(function (t) { return '<li>' + esc(t.name) + ': ขายได้ ' + t.min + ' คนขึ้นไปในเดือน → ' + t.pct + '%</li>'; }).join('') +
+      '<li>คิดจากยอดที่ลูกค้าจ่ายจริง (หลังส่วนลด ' + d.discount + '%) · นับเฉพาะคำสั่งซื้อที่ผู้ขายตรวจยอดแล้ว</li>' +
+      '<li>ขึ้นขั้นกลางเดือน = ยอดก่อนหน้าของเดือนนั้นได้อัตราใหม่ด้วย</li>' +
+      (d.team_pct > 0 ? '<li>ทีม: รับ ' + d.team_pct + '% จากยอดขายของคนที่คุณชวน (เดือนที่คุณขายเองได้อย่างน้อย 1 คน)</li>' : '') +
+      (d.bonus > 0 ? '<li>โบนัส ' + money(d.bonus) + ' บาท เมื่อขายคนแรกได้ภายใน ' + d.bonus_days + ' วันหลังสมัคร</li>' : '') +
+      '<li>ค่าคอมพักไว้ ' + d.hold_days + ' วัน (กันคืนเงิน) แล้วโอนรอบวันที่ 1 และ 16 · ลูกค้าคืนเงิน = ค่าคอมรายการนั้นยกเลิก</li>' +
+      '<li>ใช้รหัสตัวเองซื้อเองไม่ได้ · ห้ามโฆษณาเกินจริง/สแปม</li>';
+    if (d.line_url) { all('.lineA').forEach(function (a) { a.href = d.line_url; a.hidden = false; }); }
+    show('share', !!navigator.share);
+    drawQR(d);
+  }
+
+  function load() {
+    var tk = B.token || '';
+    if (!tk) return fail('ลิงก์ไม่ครบ — ใช้ลิงก์แดชบอร์ดที่ได้ตอนสมัครตัวแทน');
+    google.script.run.withSuccessHandler(function (r) {
+      if (!r || !r.ok) return fail((r && r.error) || 'โหลดข้อมูลไม่ได้');
+      render(r);
+    }).withFailureHandler(function () { fail('ติดต่อระบบไม่ได้ (เน็ตหลุด?) ลองรีเฟรช'); }).affDash(tk);
+  }
+
+  $('brandName').textContent = S.product || 'ตัดคลิป AI';
+  $('shopLink').href = S.page || exec('');
+  $('cpCode').addEventListener('click', function () { copyText(D.code, $('cpCode')); });
+  $('cpLink').addEventListener('click', function () { copyText(D.link, $('cpLink')); });
+  $('cpJoin').addEventListener('click', function () { copyText(D.join_link, $('cpJoin')); });
+  $('share').addEventListener('click', function () { try { navigator.share({ title: D.product, text: templates(D)[2], url: D.link }); } catch (e) { /* ไม่เป็นไร */ } });
+  $('ppSave').addEventListener('click', function () {
+    var b = $('ppSave'), v = $('ppIn').value.trim();
+    if (v.replace(/\D/g, '').length < 10) { $('ppMsg').textContent = 'ใส่เบอร์มือถือ 10 หลัก หรือเลขบัตร 13 หลัก'; return; }
+    b.disabled = true; $('ppMsg').textContent = 'กำลังบันทึก…';
+    google.script.run.withSuccessHandler(function (r) {
+      b.disabled = false;
+      if (!r || !r.ok) { $('ppMsg').textContent = (r && r.error) || 'บันทึกไม่สำเร็จ'; return; }
+      $('ppMsg').textContent = 'บันทึกแล้ว ✓'; setTimeout(function () { show('ppBox', false); }, 1200);
+    }).withFailureHandler(function () { b.disabled = false; $('ppMsg').textContent = 'บันทึกไม่สำเร็จ ลองใหม่'; }).affSetPromptPay(B.token, v);
+  });
+  load();
+})();
+</script>
+</body>
+</html>
