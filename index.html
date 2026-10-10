@@ -762,10 +762,11 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
         var tick = function () {
           var left = S.promo_end_ts - Math.floor(Date.now() / 1000);
           if (left <= 0) { cd.textContent = 'หมดเขตแล้ว'; return; }
-          var d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60);
-          cd.textContent = '⏰ หมดเขต ' + thaiDate(S.promo_end) + ' · เหลือ ' + (d ? d + ' วัน ' : '') + h + ' ชม. ' + m + ' นาที';
+          var d = Math.floor(left / 86400), h = Math.floor(left % 86400 / 3600), m = Math.floor(left % 3600 / 60), sec = left % 60;
+          var two = function (n) { return (n < 10 ? '0' : '') + n; };
+          cd.textContent = '⏰ หมดเขต ' + thaiDate(S.promo_end) + ' · เหลือ ' + (d ? d + ' วัน ' : '') + two(h) + ':' + two(m) + ':' + two(sec);
         };
-        tick(); setInterval(tick, 30000);
+        tick(); setInterval(tick, 1000);
       }
       var mr = document.querySelector('input[name=plan][value=monthly]');
       if (mr) { mr.closest('label').hidden = true; var lr = document.querySelector('input[name=plan][value=lifetime]'); if (lr) lr.checked = true; }
