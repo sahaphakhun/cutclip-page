@@ -77,11 +77,25 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
     <span id="brandName">ตัดคลิป AI</span>
   </div>
 
-  <!-- ไม่พบ -->
+  <!-- กำลังโหลดสถานะ (หน้าบน GitHub Pages ต้องถามระบบขายก่อน — ห้ามโชว์ว่าลิงก์ผิดระหว่างรอ) -->
+  <div class="card" id="vLoading" hidden>
+    <div class="spin" aria-hidden="true"></div>
+    <h1>กำลังเปิดหน้าของคุณ…</h1>
+    <p class="muted" style="margin-top:8px">รอสักครู่ ระบบกำลังดึงคีย์และตัวติดตั้งให้</p>
+  </div>
+
+  <!-- ไม่พบ / เปิดไม่สำเร็จ -->
   <div class="card" id="vNotFound" hidden>
-    <h1>ไม่พบคำสั่งซื้อ</h1>
+    <h1 id="nfTitle">ไม่พบคำสั่งซื้อ</h1>
     <p class="muted" id="nfMsg" style="margin-top:8px"></p>
-    <p><a class="btn ghost" id="shopLink1" href="#" target="_top">ไปหน้าสั่งซื้อ</a></p>
+    <p><button class="btn primary" type="button" id="nfRetry">ลองใหม่อีกครั้ง</button>
+      <a class="btn line lineBtn" href="#" target="_blank" rel="noopener" hidden>ทักไลน์ขอลิงก์ใหม่</a>
+      <a class="btn ghost" id="shopLink1" href="#" target="_top">ไปหน้าสั่งซื้อ</a></p>
+    <div id="nfDownload" hidden>
+      <div class="alert info small">ลิงก์เปิดไม่ได้ก็ติดตั้งโปรแกรมได้เลย — ติดตั้งเสร็จเปิดโปรแกรม แล้วกดเริ่มทดลองใช้ฟรีในโปรแกรม (ไม่ต้องมีคีย์) · ถ้ามีคีย์แล้ว ใส่คีย์ในโปรแกรมได้ทีหลัง</div>
+      <p><a class="btn ghost" id="nfDlWin" href="CutAI-Setup-Windows.zip">ดาวน์โหลดสำหรับ Windows</a>
+        <a class="btn ghost" id="nfDlMac" href="CutAI-Setup-Mac.command">ดาวน์โหลดสำหรับ Mac</a></p>
+    </div>
   </div>
 
   <!-- รอตรวจ -->
@@ -119,7 +133,6 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
       <h2>ติดตั้งโปรแกรม</h2>
       <div class="alert info small" id="mobileNote" hidden>ติดตั้งได้บนคอมพิวเตอร์เท่านั้น — เปิดลิงก์หน้านี้บนคอมที่จะติดตั้ง (ส่งลิงก์เข้าไลน์/อีเมลตัวเอง แล้วเปิดบนคอม) <button class="btn ghost small" type="button" id="copyPage" style="margin-top:6px">คัดลอกลิงก์หน้านี้</button></div>
       <p class="muted small">ตัวติดตั้งมีคีย์ของคุณใส่ไว้แล้ว — ติดตั้งเสร็จ โปรแกรมเปิดใช้งานเอง (ต้องต่ออินเทอร์เน็ต)</p>
-      <div class="vidHelp" style="display:flex;gap:8px;flex-wrap:wrap;margin:10px 0 0"><a class="btn ghost small" href="https://www.youtube.com/watch?v=l17ijLEz8Pw" target="_blank" rel="noopener">▶️ ดูวิธีติดตั้ง (3 นาที)</a><a class="btn ghost small" href="https://www.youtube.com/watch?v=m_0QOU0JHQM" target="_blank" rel="noopener">▶️ วิธีใส่คีย์</a><a class="btn ghost small" href="https://www.youtube.com/watch?v=2oNGzc-Repw" target="_blank" rel="noopener">▶️ วิธีตัดคลิปแรก</a></div>
       <div class="os">
         <div class="oscard" id="osWin">
           <h3>Windows 10 / 11 <span class="tag" id="tagWin" hidden>เครื่องนี้</span></h3>
@@ -171,7 +184,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
 /* 🌐 หน้าขายบน GitHub Pages: คุยกับระบบขาย (Apps Script) ผ่าน fetch แทน google.script.run */
 (function () {
   var EXEC = "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec";
-  var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 4990, "promo_end": "2026-10-15", "promo_end_ts": 1792083599, "page": "https://sahaphakhun.github.io/cutclip-page/", "aff": {"on": true, "discount": 10, "cookie_days": 60, "pct": [20, 30]}}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
+  var SNAP = {"shop": {"product": "ตัดคลิป AI", "prices": {"monthly": 990, "lifetime": 4990}, "days": 30, "promptpay_ok": true, "account_name": "สหภาคุณ ภูนาขาว", "line": "นามิ | @617pjric", "line_url": "https://line.me/R/ti/p/%40617pjric", "line_label": "ทักไลน์นามิ", "contact_kind": "line", "eta": "ภายใน 24 ชั่วโมง", "max_devices": 2, "demo_url": "", "exec": "https://script.google.com/macros/s/AKfycbx_UXwvru_VdhzTwgCq0w5CE_eRKxj69EZapGD97R1_ypurfpgY1r0zTb16HHKXlbalDQ/exec", "trial_days": 7, "free": true, "sell": true, "lifetime_old": 0, "promo_end": "", "promo_end_ts": 0, "page": "https://sahaphakhun.github.io/cutclip-page/", "aff": {"on": true, "discount": 10, "cookie_days": 60, "pct": [20, 30]}}, "qr": null};                                 // ข้อมูลร้านตอนสร้างหน้า (ดึงสดอีกทีตอนเปิด)
   var q = new URLSearchParams(location.search);
   window.__PAGES__ = true;                             // หน้านี้อยู่บน GitHub Pages — มีไฟล์ตัวติดตั้งสาธารณะข้าง ๆ
   window.__BOOT__ = { shop: SNAP.shop || {}, qr: SNAP.qr || null, renew: q.get('renew') || '', ref: q.get('ref') || '', join: q.get('join') || '',
@@ -233,6 +246,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
   var S = B.shop || {};
   var st = B.status || {};
   var timer = null;
+  if (!B.order || !B.token) st = { ok: false };     // ลิงก์ไม่มี o/t — ไม่ต้องรอถามระบบ
 
   function $(id) { return document.getElementById(id); }
   function all(sel) { return Array.prototype.slice.call(document.querySelectorAll(sel)); }
@@ -263,10 +277,16 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
   }
 
   function render() {
-    ['vNotFound', 'vPending', 'vRejected', 'vApproved'].forEach(function (v) { show(v, false); });
+    ['vLoading', 'vNotFound', 'vPending', 'vRejected', 'vApproved'].forEach(function (v) { show(v, false); });
     all('.orderNo').forEach(function (el) { el.textContent = st.order || B.order || ''; });
+    if (st && st.loading) { show('vLoading', true); return; }       // ยังไม่ได้คำตอบจากระบบขาย — ไม่ใช่ลิงก์ผิด
     if (!st || !st.ok) {
-      $('nfMsg').textContent = (st && st.error) || 'ลิงก์ไม่ถูกต้อง';
+      var cut = !B.order || !B.token;                                // ลิงก์ขาดช่วงตอนคัดลอก/ส่งต่อ
+      $('nfTitle').textContent = st && st.neterr ? 'เปิดหน้านี้ยังไม่สำเร็จ' : (cut ? 'ลิงก์ไม่ครบ' : 'ไม่พบคำสั่งซื้อ');
+      $('nfMsg').textContent = cut ? 'ลิงก์นี้ขาดบางส่วน (อาจถูกตัดตอนคัดลอกหรือส่งต่อ) — เปิดลิงก์เต็มจากอีเมลอีกครั้ง หรือทักไลน์ผู้ขายแจ้งเลขคำสั่งซื้อเพื่อขอลิงก์ใหม่'
+        : ((st && st.error) || 'ลิงก์ไม่ถูกต้อง — ตรวจลิงก์อีกครั้ง หรือทักไลน์ผู้ขายเพื่อขอลิงก์ใหม่');
+      show('nfRetry', !cut);
+      show('nfDownload', !!window.__PAGES__);                        // หน้า Pages มีไฟล์ตัวติดตั้งสาธารณะ (ไม่มีคีย์ในไฟล์) ให้ลูกค้าไม่ตัน
       show('vNotFound', true);
       return stopPoll();
     }
@@ -311,12 +331,20 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
     if (!timer) timer = setInterval(refresh, 30000);
   }
   function stopPoll() { if (timer) { clearInterval(timer); timer = null; } }
+  var tries = 0;
+  function netFail() {                       // ระบบขายไม่ตอบ (เน็ตหลุด/Apps Script ตื่นช้า) — ลองซ้ำเอง 3 รอบก่อนแจ้งลูกค้า
+    if (st.ok) return;                       // เคยได้สถานะแล้ว: รอบ poll หน้าให้ลองใหม่เงียบ ๆ
+    if (++tries <= 3) { setTimeout(refresh, 3000 * tries); return; }
+    st = { ok: false, neterr: true, error: 'ติดต่อระบบไม่ได้ชั่วคราว (เน็ตหลุดหรือระบบช้า) — ลิงก์ของคุณไม่ได้เสีย กด "ลองใหม่อีกครั้ง"' };
+    render();
+  }
   function refresh() {
-    if (typeof google === 'undefined' || !google.script) return;
+    if (typeof google === 'undefined' || !google.script || !B.order || !B.token) return;
     google.script.run.withSuccessHandler(function (r) {
-      if (r && (r.ok || !st.ok)) st = r;
+      if (!r || typeof r !== 'object') return netFail();
+      if (r.ok || !st.ok) { st = r; tries = 0; }
       render();
-    }).withFailureHandler(function () { /* เน็ตหลุด — รอบหน้าลองใหม่ */ }).getStatus(B.order, B.token);
+    }).withFailureHandler(netFail).getStatus(B.order, B.token);
   }
 
   // ───── ดาวน์โหลดตัวติดตั้ง (server สร้างไฟล์ → base64 → Blob) ─────
@@ -374,6 +402,7 @@ footer{color:var(--muted);font-size:14px;text-align:center;margin-top:20px}
   });
   $('copyKey').addEventListener('click', function () { copyText(st.key || '', $('copyKey')); });
   $('copyPage').addEventListener('click', function () { copyText(pageUrl(), $('copyPage')); });
+  $('nfRetry').addEventListener('click', function () { st = { ok: false, loading: true }; tries = 0; render(); refresh(); });
   $('refreshNow').addEventListener('click', function (e) { e.preventDefault(); $('lastCheck').textContent = 'กำลังตรวจ…'; refresh(); });
 })();
 </script>
