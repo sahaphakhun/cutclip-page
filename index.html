@@ -236,11 +236,12 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
 /* ⏸ ปิดจำหน่ายชั่วคราว (เจ้าของ 9 พ.ย. 69) — สวิตช์ SALES_PAUSED ในสคริปต์ล่างสุด */
 .pausedBar{background:#7a1d3a;color:#fff;text-align:center;padding:12px 16px;font-weight:700;line-height:1.5}
 .pausedBar small{display:block;font-weight:400;opacity:.9}
-body.paused #pricing, body.paused .tab[data-tab=new], body.paused #tabNew, body.paused [data-go=pricing], body.paused .rplanLife{display:none!important}
+body.paused #pricing, body.paused #buy, body.paused [data-go=pricing], body.paused .renewHint{display:none!important}
+.pausedBar a{color:#fff;text-decoration:underline}
 </style>
 </head>
 <body>
-<div class="pausedBar" id="pausedBar" hidden>ปิดจำหน่ายโปรแกรมชั่วคราว<small>ตอนนี้งดรับสั่งซื้อใหม่ · ลูกค้าเดิมยังใช้งาน ดาวน์โหลด และต่ออายุคีย์เดิมได้ตามปกติ</small></div>
+<div class="pausedBar" id="pausedBar" hidden>ปิดจำหน่ายโปรแกรมชั่วคราว<small>ตอนนี้งดรับสั่งซื้อใหม่และงดต่ออายุผ่านหน้าเว็บ · ลูกค้าเดิมยังใช้งานและดาวน์โหลดได้ตามปกติ</small><small id="pausedContact" hidden>ต้องการซื้อโปรแกรม ติดต่อเจ้าของโดยตรงที่ <a class="lineBtn" href="#" target="_blank" rel="noopener" hidden>LINE</a></small></div>
 <header class="hero" id="top">
   <div class="wrap">
     <div class="brand">
@@ -699,7 +700,7 @@ body.paused #pricing, body.paused .tab[data-tab=new], body.paused #tabNew, body.
 <script>
 (function () {
   'use strict';
-  var SALES_PAUSED = true;      // ⏸ ปิดจำหน่ายโปรแกรมชั่วคราว (เจ้าของ 9 พ.ย. 69) — true = ซ่อนราคา/ซื้อใหม่/อัปเกรด เหลือต่ออายุคีย์เดิม · false = ขายตามเดิม
+  var SALES_PAUSED = true;      // ⏸ ปิดจำหน่ายโปรแกรมชั่วคราว (เจ้าของ 9 พ.ย. 69 "ปิดต่ออายุ") — true = ซ่อนราคา/ซื้อใหม่/ต่ออายุ + บอกติดต่อเจ้าของทางไลน์ · false = ขายตามเดิม
   var B = window.__BOOT__;
   var S = B.shop || {};
   var QR = B.qr || null;
@@ -790,9 +791,9 @@ body.paused #pricing, body.paused .tab[data-tab=new], body.paused #tabNew, body.
     if (!S.promptpay_ok) { show('closed', true); show('order', false); }
     if (SALES_PAUSED) {
       document.body.classList.add('paused'); show('pausedBar', true);
-      var bh = document.querySelector('#buy h2'); if (bh) bh.textContent = 'ต่ออายุคีย์เดิม (ลูกค้าเดิม)';
-      var rl = document.querySelector('input[name=rplan][value=renew]'); if (rl) rl.checked = true;
-      setTab('renew');
+      show('pausedContact', !!S.line_url);
+      var pc = document.querySelector('#pausedContact a'), lm = /%40([A-Za-z0-9._-]+)/.exec(S.line_url || '');
+      if (pc && lm) pc.textContent = 'LINE @' + lm[1];
     }
     var last = store('cutai_last_order');
     if (last) {
