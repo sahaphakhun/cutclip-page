@@ -233,9 +233,14 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
   .section{padding:56px 0}
   .card{padding:26px 26px}
 }
+/* ⏸ ปิดจำหน่ายชั่วคราว (เจ้าของ 9 พ.ย. 69) — สวิตช์ SALES_PAUSED ในสคริปต์ล่างสุด */
+.pausedBar{background:#7a1d3a;color:#fff;text-align:center;padding:12px 16px;font-weight:700;line-height:1.5}
+.pausedBar small{display:block;font-weight:400;opacity:.9}
+body.paused #pricing, body.paused .tab[data-tab=new], body.paused #tabNew, body.paused [data-go=pricing], body.paused .rplanLife{display:none!important}
 </style>
 </head>
 <body>
+<div class="pausedBar" id="pausedBar" hidden>ปิดจำหน่ายโปรแกรมชั่วคราว<small>ตอนนี้งดรับสั่งซื้อใหม่ · ลูกค้าเดิมยังใช้งาน ดาวน์โหลด และต่ออายุคีย์เดิมได้ตามปกติ</small></div>
 <header class="hero" id="top">
   <div class="wrap">
     <div class="brand">
@@ -488,7 +493,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
         </div>
         <div class="choices">
           <label class="choice"><input type="radio" name="rplan" value="renew" checked><span>ต่ออายุ <span class="nDays">30</span> วัน <b><span class="mMonthly">990</span> บาท</b><small>วันที่ยังเหลืออยู่ไม่หาย บวกต่อให้</small></span></label>
-          <label class="choice"><input type="radio" name="rplan" value="lifetime"><span>อัปเกรดเป็นตลอดชีพ <b><span class="mLifetime">4,990</span> บาท</b><small>คีย์เดิมใช้ได้ตลอด ไม่ต้องต่ออายุอีก</small></span></label>
+          <label class="choice rplanLife"><input type="radio" name="rplan" value="lifetime"><span>อัปเกรดเป็นตลอดชีพ <b><span class="mLifetime">4,990</span> บาท</b><small>คีย์เดิมใช้ได้ตลอด ไม่ต้องต่ออายุอีก</small></span></label>
         </div>
         <div id="renewErr" class="alert err" role="alert" hidden></div>
         <div id="keyInfo" class="alert ok" hidden></div>
@@ -694,6 +699,7 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
 <script>
 (function () {
   'use strict';
+  var SALES_PAUSED = true;      // ⏸ ปิดจำหน่ายโปรแกรมชั่วคราว (เจ้าของ 9 พ.ย. 69) — true = ซ่อนราคา/ซื้อใหม่/อัปเกรด เหลือต่ออายุคีย์เดิม · false = ขายตามเดิม
   var B = window.__BOOT__;
   var S = B.shop || {};
   var QR = B.qr || null;
@@ -782,6 +788,12 @@ footer{padding:26px 0 96px;color:var(--muted);font-size:14px;text-align:center}
     all('.policyA').forEach(function (a) { a.href = exec('page=policy'); });
     $('policyLink').href = exec('page=policy');
     if (!S.promptpay_ok) { show('closed', true); show('order', false); }
+    if (SALES_PAUSED) {
+      document.body.classList.add('paused'); show('pausedBar', true);
+      var bh = document.querySelector('#buy h2'); if (bh) bh.textContent = 'ต่ออายุคีย์เดิม (ลูกค้าเดิม)';
+      var rl = document.querySelector('input[name=rplan][value=renew]'); if (rl) rl.checked = true;
+      setTab('renew');
+    }
     var last = store('cutai_last_order');
     if (last) {
       try {
